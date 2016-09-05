@@ -1,0 +1,65 @@
+{extend name="2columns-left" /}
+{block name="sidebar"}
+ {include file="index/sidebar" /}
+{/block}
+{block name="content"}
+<div class="ui top attached tabular menu border-blue">
+  <div class="active blue item">用户信息</div>
+</div>
+<div class="ui bottom  attached active tab segment border-blue">
+ <form class="ui form" >
+  <table class="table-form">
+    <tr class="field">
+    <td class="text-right" width="10%"><label>用户名：</label></td>
+    <td width="60%">
+      {$user.username} 
+    </td>
+    </tr> 
+    <tr class="field">
+    <td class="text-right" width="10%"><label>用户昵称：</label></td>
+    <td width="60%">
+      {$user.nickname}
+    </td>
+    </tr>
+    <tr class="field">
+    <td class="text-right" width="10%"><label>用户级别：</label></td>
+    <td width="60%">
+     {$user.levelname|getLeveltext}
+    </td>
+    </tr>
+    <tr class="field trsku">
+    <td class="text-right" width="10%"><label>用户状态：</label></td>
+    <td width="40%">
+    {eq name="$user.checkadmin" value="true"} 正常 {else/} 冻结 {/eq}
+    </td>
+    </tr>
+    <tr class="field">
+    <td class="text-right" width="10%"><label>添加时间：</label></td>
+    <td width="40%">
+        {php}echo date('Y年m月d日 H:i:s', $user['creat_at']) {/php}
+    </td>
+    </tr>
+    <tr class="field">
+    <td class="text-right" width="10%"><label>最近登录时间：</label></td>
+    <td width="40%">
+    {php}echo date('Y年m月d日 H:i:s', $user['logintime']) {/php}
+    </td>
+    </tr>
+    <tr class="field">
+    <td class="text-right" width="10%"><label>最近登录IP：</label></td>
+    <td width="40%">
+     {$user.loginip}
+    </td>
+    </tr>
+  
+    <tr >
+    <td class="text-right" width="10%"></td>
+    <td width="40%">
+      <a class="ui blue mt15 button" id="changebtn" href="{:url('user/changepassword?id='.$user['id'])}" ><i class="ui edit icon"></i>修改密码</a>
+    </td>
+    </tr>
+  </table>
+</form>
+
+</div>
+{/block}

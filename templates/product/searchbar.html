@@ -1,0 +1,38 @@
+<div class="ui grid">
+  <div class="eight wide column">
+  <form name="ordersearch" id="ordersearch" action="{:url('Redman/redmanSearch')}" method="get">
+<div class="ui action left input">
+  <input type="text" name="keyword" id="keyword" placeholder="关键词...">
+  <select name="stype" class="ui compact selection dropdown">
+    <option selected="" value="name">产品名称</option>
+    <option value="sku">SKU</option>
+  </select>
+  <div type="submit" id="btn-search" class="ui blue button">搜索</div>
+</div>
+ </form>
+  </div>
+  <div class="eight wide column">
+  
+  </div>
+</div>
+
+<script type="text/javascript">
+ $(document).ready(function() {
+                            $('#reservation').daterangepicker({opens: 'center'});
+                        });
+
+   $('#btn-search').click(function(){
+       if($('#keyword').val() !=''){
+          $('#ordersearch').submit();
+       }  
+   });
+
+
+     $('#btn-filter').click(function(){
+       var country = $("#country>i").data('country');
+       if($('#reservation').val() !=''|| country !=''){
+          $('#scountry').val(country);
+          $('#orderfilter').submit();
+       }  
+   });
+ </script>

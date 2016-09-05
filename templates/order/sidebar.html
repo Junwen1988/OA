@@ -1,0 +1,129 @@
+ <div class="ui styled fluid accordion">
+  <div class="title {php}if(!isset($leftopen)){ echo 'active';}{/php}"><i class="dropdown icon"></i>订单管理</div>
+  <div class="content {php}if(!isset($leftopen)){ echo 'active';}{/php}">
+  <div class="ui secondary vertical menu fluid">
+  <a href="{:url('order/index')}" class="{eq name="currentleft" value="alllist"} active {/eq} item">
+    所有订单 <i class="angle right icon"></i>
+  </a>
+  <a href="{:url('order/wprocessing')}" class="item {eq name="currentleft" value="wprocessing"} active {/eq}">
+    待处理订单  <i class="angle right icon"></i>
+  </a>
+  <a href="{:url('order/processing')}" class="item {eq name="currentleft" value="processing"} active {/eq}">
+    处理中订单  <i class="angle right icon"></i>
+  </a>
+  <a href="{:url('order/pending')}" class="item {eq name="currentleft" value="pending"} active {/eq}">
+    待付款订单  <i class="angle right icon"></i>
+  </a>
+  <div class="ui dropdown item {eq name="currentleft" value="onhold"} active {/eq}">
+    <i class="chevron circle right icon"></i>
+    挂起订单
+    <div class="menu">
+      <a href="{:url('order/outofstock')}" class="item">缺货</a>
+      <a href="{:url('order/dispute')}" class="item">争议</a>
+    </div>
+  </div>
+  <a href="{:url('order/completed')}" class="item {eq name="currentleft" value="completed"} active {/eq}">
+    已完成订单  <i class="angle right icon"></i>
+  </a>
+</div>
+  </div>
+  <div class="title {php}if(isset($leftopen)){ if($leftopen == 'gc' || $leftopen == 'gced') {echo 'active';}}{/php}"><i class="dropdown icon"></i> 谷仓订单 </div>
+  <div class="content {php}if(isset($leftopen)){ if($leftopen == 'gc'|| $leftopen == 'gced') {echo 'active';}}{/php}">
+    <div class="ui secondary vertical menu fluid">
+    <a  href="{:url('order/gc')}" class="item {eq name="currentleft" value="gc"} active {/eq}">
+      已发送到谷仓订单  <i class="angle right icon"></i>
+    </a>
+    <a  href="{:url('order/gced')}" class="item {eq name="currentleft" value="gced"} active {/eq}">
+      谷仓发货完成订单  <i class="angle right icon"></i>
+    </a>
+
+  </div>
+  </div>
+  
+   <div class="title {php}if(isset($leftopen)){ if($leftopen == 'epack' || $leftopen == 'epacked') {echo 'active';}}{/php}"><i class="dropdown icon"></i> E邮宝订单 </div>
+  <div class="content {php}if(isset($leftopen)){ if($leftopen == 'epack'|| $leftopen == 'epacked') {echo 'active';}}{/php}">
+    <div class="ui secondary vertical menu fluid">
+    <a  href="{:url('order/epack')}" class="item {eq name="currentleft" value="epack"} active {/eq}">
+      已发送到E邮宝订单  <i class="angle right icon"></i>
+    </a>
+    <a  href="{:url('order/epacked')}" class="item {eq name="currentleft" value="epacked"} active {/eq}">
+      E邮宝发货完成订单  <i class="angle right icon"></i>
+    </a>
+
+  </div>
+  </div>
+    <div class="title {php}if(isset($leftopen)){ if($leftopen == '4px' || $leftopen == '4pxed') {echo 'active';}}{/php}"><i class="dropdown icon"></i> 递四方订单 </div>
+  <div class="content {php}if(isset($leftopen)){ if($leftopen == '4px'|| $leftopen == '4pxed') {echo 'active';}}{/php}">
+    <div class="ui secondary vertical menu fluid">
+ 
+    <a href="{:url('Order/px4')}" class="item {eq name="currentleft" value="4px"} active {/eq}">
+      已发送到递四方订单  <i class="angle right icon"></i>
+    </a>
+    <a href="{:url('Order/px4ed')}" class="item {eq name="currentleft" value="4pxed"} active {/eq}">
+      递四方发货完成订单  <i class="angle right icon"></i>
+    </a>
+
+  </div>
+  </div>
+
+  <div class="title {php}if(isset($leftopen)){ if($leftopen == 'oneworld' || $leftopen == 'oneworld') {echo 'active';}}{/php}"><i class="dropdown icon"></i> 易时达订单 </div>
+  <div class="content {php}if(isset($leftopen)){ if($leftopen == 'oneworld'|| $leftopen == 'oneworlded') {echo 'active';}}{/php}">
+    <div class="ui secondary vertical menu fluid">
+    <a href="{:url('Order/oneworld')}" class="item {eq name="currentleft" value="oneworld"} active {/eq}">
+      已发送到易时达订单  <i class="angle right icon"></i>
+    </a>
+    <a href="{:url('Order/oneworlded')}" class="item {eq name="currentleft" value="oneworlded"} active {/eq}">
+      易时达发货完成订单  <i class="angle right icon"></i>
+    </a>
+
+  </div>
+  </div>
+
+
+  <div class="title {php}if(isset($leftopen)){ if($leftopen == 'wyt' || $leftopen == 'wyt') {echo 'active';}}{/php}"><i class="dropdown icon"></i> 万邑通订单 </div>
+  <div class="content {php}if(isset($leftopen)){ if($leftopen == 'wyt'|| $leftopen == 'wyted') {echo 'active';}}{/php}">
+    <div class="ui secondary vertical menu fluid">
+    <a href="{:url('Order/wyt')}" class="item {eq name="currentleft" value="wyt"} active {/eq}">
+      已发送到万邑通订单  <i class="angle right icon"></i>
+    </a>
+    <a href="{:url('Order/wyted')}" class="item {eq name="currentleft" value="wyted"} active {/eq}">
+      万邑通发货完成订单  <i class="angle right icon"></i>
+    </a>
+
+  </div>
+  </div>
+
+  <div class="title"><i class="dropdown icon"></i> 四海邮订单 </div>
+  <div class="content">
+    <div class="ui secondary vertical menu fluid">
+    <a class="item">
+      已发送到四海邮订单  <i class="angle right icon"></i>
+    </a>
+    <a class="item">
+      四海邮发货完成订单  <i class="angle right icon"></i>
+    </a>
+
+  </div>
+  </div>
+
+  <div class="title"><i class="dropdown icon"></i> DHL订单 </div>
+  <div class="content">
+    <div class="ui secondary vertical menu fluid">
+
+    <a class="item">
+      已发送到DHL订单 <i class="angle right icon"></i>
+    </a>
+    <a class="item">
+      DHL发货完成订单 <i class="angle right icon"></i>
+    </a>
+
+  </div>
+  </div>
+
+  
+</div>
+
+<div class="print mt15">
+  <button class="fluid ui blue  button"> <i class="print icon"></i>打印拣货单</button>
+  <button class="fluid ui blue  button mt10"> <i class="print icon"></i>打印分拣单</button>
+</div>

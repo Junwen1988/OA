@@ -1,0 +1,168 @@
+{extend name="2columns-left" /}
+{block name="sidebar"}
+ {include file="order/sidebar" /}
+{/block}
+
+{block name="content"}
+<div class="ui grid">
+<div class="two column row">
+  <div class="column"><div class="ui pointing below  blue basic label"><i class="cart icon"></i> 订单(#{$order.ordernum})产品</div></div>
+  <div class="column"></div>
+</div>  
+</div>
+
+<form name="ordercon" id="ordercon" class="ui form" action="{:url('Ordercon/updateQty')}" method="post">
+<div class="ui  inverted dimmer">
+    <div class="ui text loader">更新中...</div>
+</div>
+<table class="ui celled selectable  table orderdetails">
+<thead>
+ <tr>
+ <th>序号</th><th>产品名称</th><th>SKU</th><th>数量</th><th class="right aligned">操作</th>
+ </tr> 
+</thead>
+  <tbody>
+  {volist name="ordercon" id="vo"}
+    <tr>
+      <td>{$key+1}  <input type="hidden" name="id[]" value="{$vo.id}" /></td>
+      <td>{$vo.cnname}</td>
+      <td>{$vo.sku}</td>
+      <td><input type="number" name="qty[]" min="1" value="{$vo.qty}" placeholder="数量" /></td>
+      <td class="right aligned"><a  class="ui label delete-pro" data-id="{$vo.id}" href="javascript:void(0)"><i class="trash icon"></i>删除</a></td>
+    </tr>
+  {/volist}
+  </tbody>
+</table>
+</form>
+
+<div class="ui grid mt20">
+  <div class="column center aligned">
+      <div id="ordercon-add" class="ui left labeled  icon  button green"><i class="add icon"></i>添加产品</div>
+      <div id="updateqty" class="ui blue  left labeled  icon  button"><i class="refresh icon"></i> 更新数量</div>
+      <div class="ui grey  left labeled  icon  button" onclick="javascript:history.go(-1)"><i class="reply icon"></i> 返回订单</div>
+  </div>
+
+</div>
+
+
+
+
+<!-- 添加订单产品 -->
+<div class="ui coupled modal" id="addorderpro-pop">
+  <div class="header">添加订单产品</div>
+  <div class="content">
+  <form name="product" id="product" class="ui form" action="{:url('Order/addOrderPro')}" method="post">
+  <table class="table fullwidth">
+    <tr class="field">
+    <td class="td_sku_add" width="50%"> 
+  <div class="ui fluid inline search selection dropdown">
+  <input type="hidden" class="require" id="sku_add" name="sku" value="">
+  <i class="dropdown icon"></i>
+  <div class="default text">选择要添加的产品</div>
+  <div class="menu">
+  {volist name="productlist" id="vo"}
+  <div class="item" data-value="{$vo.sku}"><i class="image icon"></i>{$vo.cnname}</div>
+  {/volist}
+</div>
+</div>
+</td>
+<td  width="10%">数量：</td>
+<td class="td_qty_add" width="40%"><input type="number" class="require" id="qty_add" name="qty" value="1" /></td>
+    </tr>
+  </table>
+  <input type="hidden" name="ordernum" value="{$order.ordernum}">
+  </form>
+  <div id="addpromsg" class="ui negative message hidden ">
+  <i class="close icon"></i>
+  <div class="header">添加失败</div>
+  </div>
+
+  </div>
+   <div class="actions">
+    <div class="column centered row">
+      <div class="ui cancel icon  button "><i class="cancel icon"></i> 取消</div>
+      <div class="ui blue addpro  icon  button"><i class="checkmark icon"></i> 添加</div>
+    </div>
+  </div>
+</div>
+<!-- end添加订单产品-->
+
+
+{/block}
+
+{block name="script"}
+<script type="text/javascript">
+ $(document).ready(function(){
+
+//弹出订单产品
+   $("#ordercon-add").click(function(){
+    $('#addorderpro-pop').modal('show');
+  });
+
+})
+
+//添加订单产品
+$(".addpro").click(function(){
+   if($("#sku_add").val()==''){
+     $("#product .field").addClass('error');
+     return false;
+   }
+   if($("#qty_add").val()=='' || $("#qty_add").val() < 1){
+     $("#product .field").addClass('error');
+     return false;
+   }
+  $(this).addClass('disabled loading');
+
+
+   $.post("{:url('Order/addOrderPro')}",$('#product').serialize(), function(data){
+      if(data.status == 1){
+         console.log(data);
+          refresh(0);
+      }else{
+        $('#addpromsg .header').text(data.msg);
+        $('#addpromsg').removeClass('hidden');
+        $(this).removeClass('disabled loading');
+
+      }
+   });
+
+});
+
+//end 添加订单产品
+
+//删除订单产品
+$(".delete-pro").click(function(){
+  $('.dimmer').addClass('active');
+   var idvalue = $(this).data('id'); 
+   $.post("{:url('Order/deleteOrderPro')}",{id:idvalue},function(data){
+      if(data.status=='1'){
+        refresh(0);
+      }
+   });
+});
+// end 删除订单产品
+
+
+//更新产品数量
+
+$('#updateqty').click(function(){
+   $('.dimmer').addClass('active');
+   $.post("{:url('Ordercon/updateQty')}", $('#ordercon').serialize(), function(data){
+       console.log(data);
+       if(data.status=='1'){
+        refresh(500);
+      }
+   });
+});
+
+
+//清除错误框
+$('.require').focus(function(){
+     $(this).parent('.input-box').parent('td').removeClass("negative");
+$(".field").removeClass('error');
+});
+
+</script>
+{/block}
+
+

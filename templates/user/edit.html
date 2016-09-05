@@ -1,0 +1,180 @@
+{extend name="2columns-left" /}
+{block name="sidebar"}
+ {include file="user/sidebar" /}
+{/block}
+{block name="content"}
+<div class="ui top attached tabular menu border-blue">
+  <div class="active blue item">修改用户</div>
+</div>
+<div class="ui bottom  attached active tab segment border-blue">
+<div id="message" class="ui error message hidden">
+  <i class="close icon"></i>
+  <div class="header">发生错误</div>
+  <ul class="list">
+    <li></li>
+  </ul>
+</div>
+ <form class="ui form" name="user-edit" id="user-update" action="{:url('user/edit')}" method="post">
+  <table class="table-form">
+    <tr class="field">
+    <td class="text-right" width="10%"><label>用户名：</label></td>
+    <td width="60%">
+      <input type="text" name="username" class="require" placeholder="用户名" value="{$user.username}" readonly=""> 
+    </td>
+    </tr> 
+    <tr class="field">
+    <td class="text-right" width="10%"><label>用户昵称：</label></td>
+    <td width="60%">
+      <input type="text" name="nickname" class="require" placeholder="用户昵称" value="{$user.nickname}"> 
+    </td>
+    </tr>
+    <tr class="field">
+    <td class="text-right" width="10%"><label>用户状态：</label></td>
+    <td width="60%">
+       <div class="inline fields">
+          <div class="field">
+            <div class="ui radio checkbox">
+              <input type="radio" name="checkadmin" {eq name="$user.checkadmin" value="true" } checked {/eq}  value="true" tabindex="0" class="hidden">
+              <label>正常</label>
+            </div>
+          </div>
+          <div class="field">
+            <div class="ui radio checkbox">
+              <input type="radio" name="checkadmin" value="false" {eq name="$user.checkadmin" value="false" } checked {/eq}  tabindex="0" class="hidden">
+              <label>冻结</label>
+            </div>
+          </div>
+       </div>
+    </td>
+    </tr>
+    <tr class="field">
+    <td class="text-right" width="10%"><label>用户级别：</label></td>
+    <td width="60%">
+       <div class="inline fields">
+          <div class="field">
+            <div class="ui radio checkbox">
+              <input type="radio" name="levelname" {eq name="$user.levelname" value="2" } checked {/eq} value="2" tabindex="0" class="hidden">
+              <label>超级管理员</label>
+            </div>
+          </div>
+          <div class="field">
+            <div class="ui radio checkbox">
+              <input type="radio" name="levelname" {eq name="$user.levelname" value="1" } checked {/eq}  value="1" tabindex="0" class="hidden">
+              <label>管理员</label>
+            </div>
+          </div>
+          <div class="field">
+            <div class="ui radio checkbox">
+              <input type="radio" name="levelname" {eq name="$user.levelname" value="0" } checked {/eq}  value="0" tabindex="0" class="hidden">
+              <label>普通用户</label>
+            </div>
+          </div>
+       </div>
+    </td>
+    </tr>
+    <tr class="field">
+    <td class="text-right" width="10%"><label></label></td>
+    <td width="60%">
+     <div class="field">
+       <div class="ui ischangepassword checkbox">
+        <input type="checkbox" class="changepassword"  tabindex="0" class="hidden">
+        <label>修改密码</label>
+       </div>
+     </div>
+    </td>
+    </tr>
+    <tr class="field hidden passwordtr">
+    <td class="text-right" width="10%"><label>密码：</label></td>
+    <td width="60%">
+      <input type="password" name="password" class="password" placeholder="密码" value=""> 
+    </td>
+    </tr> 
+    <tr class="field hidden passwordtr">
+    <td class="text-right" width="10%"><label>重复密码：</label></td>
+    <td width="60%">
+      <input type="password" name="repassword" class="repassword" placeholder="重复密码" value=""> 
+    </td>
+    </tr> 
+    <tr >
+    <td class="text-right" width="10%"></td>
+    <td width="40%">
+      <a class="ui blue mt15 button" id="updatebtn" type="submit">更新用户</a>
+      <a class="ui button " href="javascript:history.go(-2);">返回列表</a>
+    </td>
+    </tr>
+  </table>
+  <input type="hidden" name="id" value="{$user.id}">
+</form>
+
+</div>
+<div class="ui modal small success">
+  <i class="close icon"></i>
+  <div class="header">提示</div>
+  <div class="content">更新成功</div>
+  <div class="actions">
+    <a href="javascript:history.go(-1);" class="ui blue button">好的</a>
+  </div>
+</div>
+
+<div class="ui modal small failt">
+  <i class="close icon"></i>
+  <div class="header">提示</div>
+  <div class="content"></div>
+  <div class="actions">
+    <div class="ui blue cancel button">好的</div>
+  </div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+  $(".ischangepassword").checkbox({onChecked:function(){
+    $('.passwordtr').removeClass('hidden');
+    $('.passwordtr input').addClass('require');
+  },
+  onUnchecked:function(){
+    $('.passwordtr').addClass('hidden');
+    $('.passwordtr input').removeClass('require');
+  }
+  });
+})
+  $("#updatebtn").click(function(){
+    var yes = 1;
+    $(".require").each(function(){
+      if($(this).val()==''){
+        $(this).parent('td').parent('.field').addClass("error");
+        yes = 0;
+      }
+    });
+
+   if($(".changepassword ").prop("checked")){
+     if($('.password').val() != $('.repassword').val()){
+       yes = 0;
+       $('.repassword').parent('td').parent('.field').addClass("error");
+     }
+   }
+
+    //如果必填项不为空
+    if(yes == 1){
+      $.post("{:url('user/edit')}",$("#user-update").serialize(),function(data){
+         if(data.status == '1'){
+            $('.success').modal('show');
+         }else{
+             $('.failt .content').text(data.msg);
+             $('.failt').modal('show');
+
+         }
+      });
+    }
+
+  });
+
+  //清除错误
+  $(".require").focus(function(){
+    $(this).parent('td').parent('.field').removeClass("error");
+  });
+ $(".passwordtr input").focus(function(){
+    $(this).parent('td').parent('.field').removeClass("error");
+  });
+</script>
+
+{/block}

@@ -1,0 +1,13 @@
+<button class="fluid ui blue  button"> <i class="options icon"></i>快捷菜单</button>
+<div class="ui vertical pointing menu">
+  <a href="{:url('user/index')}" class="item {eq name='currentleft' value='list'}active{/eq}">
+     <span><i class="list  icon"></i> 用户列表</span>
+  </a>
+  <a href="{:url('user/add')}" class="item {eq name='currentleft' value='add'}active{/eq}">
+    <span><i class="add circle icon"></i> 添加用户</span>
+  </a>
+  <a href="{:url('user/stopuser')}" class="item {eq name='currentleft' value='stopuser'}active{/eq}">
+    <span><i class="warning circle icon"></i> 冻结用户</span>
+  </a> 
+</div>
+

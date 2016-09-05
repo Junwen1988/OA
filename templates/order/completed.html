@@ -1,0 +1,143 @@
+{extend name="2columns-left" /}
+{block name="sidebar"}
+ {include file="order/sidebar" /}
+{/block}
+
+{block name="content"}
+  <div class="ui action left icon input">
+       <i class="search icon"></i>
+       <input type="text" placeholder="Search...">
+       <div class="ui teal button">搜索</div>
+     </div>
+<!-- 列表 -->
+<form name="orders" class="mt15" id="orderform">
+<table class="ui celled selectable left aligned table visible fluid">
+      <thead>
+        <tr>
+        <th>
+          <div class="ui master  checkbox ">
+              <input type="checkbox" name="all" >
+          </div>
+        </th>
+        <th>订单号</th>
+        <th>下单日期</th>
+        <th>订单状态</th>
+        <th>客户名称</th>
+        <th class="center aligned">国家</th>
+        <th>订单内容</th>
+        <th width="10%">客户备注</th>
+        <th>订单备注</th>
+        <th>运费</th>
+        <th>实收金额</th>
+        <th>发货状态</th>
+        <th class="right aligned ">更新状态</th>
+        <th class="center aligned ">操作</th>
+      </tr></thead>
+      <tbody>
+      {volist name="orderlist" id="order"}
+        <tr>
+          <td class="checkboxid"><div class="ui checkbox">
+              <input type="checkbox"  name="id[]" class="orderid">
+              </div>
+          </td>
+          <td>
+          {php} 
+          if($order['customer_note'] !=''){
+              if($order['orderstate'] =='completed' || $order['orderstate'] =='cancelled'){
+                       echo '<span class="ui tag label">'.$order['ordernum'].'</span>';
+              }else{
+
+               if($order['customer_note'] !=''){  echo '<span class="ui green tag label">'.$order['ordernum'].'</span>';}
+
+              }
+
+          }else{
+             echo '<span class="text-blue">'.$order['ordernum'].'</span>';
+          } 
+          {/php}
+          </td>
+          <td>{php} echo date("Y年m月d日", $order['ordertime']){/php} <br> {php} echo date("H:i:s", $order['ordertime']){/php}</td>
+          <td>{$order.orderstate|getstatuscnname}</td>
+          <td>{$order.firstname} {$order.lastname}</td>
+          <td class="center aligned">
+             <!-- <i class="{$order.country|uplow} flag"></i><br> -->
+              {$order.country|getGjname}
+          </td>
+          <td>
+          <ul class="conlist">
+          {volist name="$order.con" id="con"}
+          <li>{$con.cnname} x {$con.qty}</li>
+          {/volist}
+          </ul>
+          </td>
+          <td>{$order.customer_note}</td>
+          <td>{$order.order_note}</td>
+          <td>{php}if($order['shipping_fee']>0) echo '￥';{/php}{$order.shipping_fee}</td>
+          <td>${$order.amount}<br>{php} if($order['discount'] > 0) echo $order['discount'];{/php}</td>
+          <td>
+           <a href="{:url('Order/updateshipment?id='.$order['id'])}">{$order.shipstate|getstatuscnname}</a>
+          </td>
+          <td class="right aligned ">
+            <div class="ui teal buttons">
+            <div class="ui  floated pointing right dropdown icon button">
+              <i class="dropdown icon"></i>
+              <div class="menu statusbtn">
+                <div class="item"><div class="ui green empty circular label"></div><a href="{:url('Order/mark?id='.$order['id'].'&action=wprocessing')}">改为等待处理</a></div>
+                <div class="item"><div class="ui olive empty circular label"></div><a href="{:url('Order/mark?id='.$order['id'].'&action=processing')}">改为处理中</a></div>
+                <div class="item"><div class="ui grey empty circular label"></div><a href="{:url('Order/mark?id='.$order['id'].'&action=cancelled')}">取消订单</a></div>
+                <div class="item"><div class="ui orange  empty circular label"></div><a href="{:url('Order/mark?id='.$order['id'].'&action=outofstock')}">缺货订单</a></div>
+                <div class="item"><div class="ui red empty circular label"></div><a href="{:url('Order/mark?id='.$order['id'].'&action=dispute')}">争议订单</a></div>
+                <div class="item"><div class="ui pink empty circular label"></div><a href="{:url('Order/mark?id='.$order['id'].'&action=onhold')}">挂起订单</a></div>
+              </div>
+            </div>
+            <a  href="{:url('Order/updatestatus?id='.$order['id'])}" class="ui button refresh-button"><i class="refresh icon"></i></a>
+            </div>
+          </td>
+          <td class="center aligned">
+           
+           <a href="{:url('Order/view?id='.$order['id'])}" class="ui blue button">查看</a>
+           
+          </td>
+        </tr>
+        {/volist}
+      </tbody>
+    </table>
+    </form>
+    <div class="ui grid">
+    <div class="eleven wide column">{$page}</div>
+    <div class="two wide column"></div>
+    <div class="three wide column">
+  <div class="ui labeled icon top blue mt30 right floated pointing dropdown button">
+  <i class="setting icon"></i>
+  <span class="text">批量操作</span>
+  <div class="menu">
+   
+    <div class="header">
+      <i class="calendar icon"></i>
+      批量修改
+    </div>
+    <div class="item">
+      <i class="olive circle icon"></i>
+      发送邮件
+    </div>
+    <div class="item">
+      <i class="violet circle icon"></i>
+      修改订单状态
+    </div>
+    <div class="item">
+      <i class="orange circle icon"></i>
+      添加赠品
+    </div>
+  </div>
+</div>
+    </div>
+    </div>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        $('.activating.element').popup();
+       
+      })
+    </script>
+{/block}
+
+

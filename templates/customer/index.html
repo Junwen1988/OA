@@ -1,0 +1,130 @@
+{extend name="2columns-left" /}
+{block name="sidebar"}
+ {include file="customer/sidebar" /}
+{/block}
+{block name="content"}
+ {include file="customer/searchbar" /}
+
+<table class="ui celled selectable  table">
+  <thead>
+    <tr>
+     <th class="center aligned">
+          <div class="ui master  checkbox ">
+              <input type="checkbox" name="all" >
+          </div>
+      </th>
+      <th class="center aligned">编号</th>
+      <th>名称</th>
+      <th class="center aligned">国家</th>
+      <th>级别</th>
+      <th class="center aligned">状态</th>
+      <th class="center aligned">来源</th>
+      <th>添加日期</th>
+      <th class="right aligned ">操作</th>
+    </tr>
+  </thead>
+  <tbody>
+  {volist name="customerlist" id="customer"}
+    <tr {switch name="customer.status"} {case value="-1"}class="error"{/case} {case value="0"} class="warning" {/case} {/switch}>
+      <td class="checkboxid center aligned">
+      <div class="ui checkbox">
+        <input type="checkbox"  name="id[]" class="customerid" value="{$customer.id}">
+      </div>
+      </td>
+      <td class="center aligned">{$customer.id + 1000}</td>
+      <td>{$customer.firstname} {$customer.lastname}</td>
+      <td class="center aligned">{$customer.country|getGjname}</td>
+      <td><div class="ui star rating" data-rating="{$customer.level}" data-max-rating="5"></div></td>
+      <td class="center aligned">{switch name="customer.status"} {case value="-1"} 冻结 {/case} {case value="0"} 未审核 {/case} {default/}正常 {/switch}</td>
+      <td class="center aligned">{switch name="customer.wherefrom"} {case value="site"} 网站 {/case} {case value="add"} 添加 {/case} {default/}其他 {/switch}</td>
+      <td>{php} echo date('Y年m月d日', $customer['creat_at']); {/php}</td>
+      <td class="right aligned ">
+            <div class="ui blue buttons">
+            <a href="{:url('customer/view?id='.$customer['id'])}" class="ui button">查看</a>
+            <div class="ui floating dropdown icon button">
+              <i class="dropdown icon"></i>
+              <div class="menu">
+                <a href="{:url('customer/edit?id='.$customer['id'])}" class="item"><i class="edit icon"></i>修改</a>
+                <a href="{:url('otherorder/adduserorder?type=customer&id='.$customer['id'])}" class="item"><i class="add icon"></i>添加订单</a>
+                <a href="javacript:void(0);" class="item deletebtn" data-username="{$customer.firstname} {$customer.lastname}" data-id="{$customer.id}" ><i class="delete icon"></i>删除</a>
+              </div>
+            </div>
+            </div>
+          </td>
+    </tr>
+ {/volist}
+  </tbody>
+</table>
+   <div class="ui grid">
+    <div class="two wide column">  
+      <a class="ui mt10 blue button" href="{:url('customer/add')}"><i class="user add icon"></i> 添加客户</a>
+    </div>
+    <div class="eleven wide column">{$page}</div>
+    <div class="three wide column">
+  <div class="ui labeled icon top blue mt10 right floated pointing dropdown button">
+  <i class="setting icon"></i>
+  <span class="text">批量操作</span>
+  <div class="menu">
+ 
+    <div id="sendemail" class="item">
+      <i class="mail outline icon"></i>
+      发送邮件
+    </div>
+    <div class="item">
+      <i class="add cart icon"></i>
+      添加订单
+    </div>
+    <div class="item">
+      <i class="gift  icon"></i>
+      添加赠品
+    </div>
+  </div>
+</div>
+    </div>
+    </div>
+<!-- deletepop -->
+<div id="blackpop" class="ui basic small modal">
+  <i class="close icon"></i>
+ <div class="ui icon large header">
+ </div>
+  <div class="actions">
+      <div class="ui red basic inverted cancel button">
+        <i class="remove icon"></i>
+        否
+      </div>
+      <a href="javascript:void(0)" id="deleteconfirm" class="ui green basic inverted  button">
+        <i class="checkmark icon"></i>
+        是
+      </a>
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){
+$('.ui.rating').rating('disable');
+})
+   var id = '';
+  $(".deletebtn").click(function(){
+     username = $(this).data('username');
+     id = $(this).data('id');
+    $("#blackpop .header").html('<i class="archive icon"></i> 是否真的要删除红人：'+username+' ?');
+        $('.ui.basic.modal').modal('show');
+  });
+ 
+  $("#deleteconfirm").click(function(){
+     $("#blackpop .header").html('<div class="ui active large text inline loader"></div><br>正在删除 '+username);
+     var deletelink = '{:url('customer/delete')}?id='+id;
+     $.get(deletelink,function(data){
+         $("#blackpop .header").html('<i class="smile  icon"></i>'+data.msg);
+         $("#blackpop .actions").remove();
+         refresh(1000);
+     });
+     
+  });
+
+  $("#sendemail").click(function(){
+    $('.ui.basic.modal').modal('show');
+  });
+
+</script>
+<!-- end delete pop-->
+{/block}

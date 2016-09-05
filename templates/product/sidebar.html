@@ -1,0 +1,31 @@
+<button class="fluid ui blue  button"> <i class="options icon"></i>快捷菜单</button>
+<div class="ui vertical pointing menu">
+  <a href="{:url('product/index')}" class="item {eq name='currentleft' value='list'}active{/eq}">
+     <span><i class="list  icon"></i> 产品列表</span>
+  </a>
+  <a href="{:url('product/add')}" class="item {eq name='currentleft' value='add'}active{/eq}">
+    <span><i class="add circle icon"></i> 添加产品</span>
+  </a>
+  <a href="{:url('product/outofstock')}" class="item">
+    <span><i class="warning circle icon"></i> 缺货产品</span>
+  </a> 
+
+  <a href="{:url('product/stockless')}" class="item">
+    <span><i class="info circle icon"></i> 库存紧张产品</span>
+  </a>
+<div class="ui dropdown item">
+    <span><i class="icon refresh"></i>库存同步</span> <i class="dropdown icon"></i>
+    <div class="menu">
+      <div class="item"><a href="{:url('product/updatefromgc')}">同步谷仓库存</a></div>
+      <div class="item"><a href="{:url('product/updatefromsite')}">同步网站库存</a></div>
+      <div class="item"><a href="{:url('product/updatetosite')}">更新网站库存</a></div>
+    </div>
+  </div>
+  <a class="item ">
+    <span><i class="bar chart icon"></i> 产品统计</span>
+  </a>
+   <a class="item ">
+    <span><i class="browser icon"></i> 销量报表</span>
+  </a>
+</div>
+

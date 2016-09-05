@@ -1,0 +1,96 @@
+{extend name="2columns-left" /}
+{block name="sidebar"}
+ {include file="product/sidebar" /}
+{/block}
+{block name="content"}
+ {include file="product/searchbar" /}
+<table class="ui celled selectable  table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>SKU</th>
+      <th>产品名称</th>
+      <th>英文名称</th>
+      <th>库存数量</th>
+      <th>谷仓库存</th>
+      <th>成本价格</th>
+      <th>重量(g)</th>
+      <th class="right aligned ">操作</th>
+
+    </tr>
+  </thead>
+  <tbody>
+  {volist name="prolist" id="product"}
+    <tr {lt name="$product.gc_qty" value="10"} {eq name="$product.gc_qty" value="0"} class="error" {else/} class="warning" {/eq}  {/lt}>
+      <td>{$product.id}</td>
+      <td>{$product.sku}</td>
+      <td>{$product.cnname}</td>
+      <td>{$product.name}</td>
+      <td>{$product.qty}</td>
+      <td>{$product.gc_qty}</td>
+      <td>￥{$product.primecost}</td>
+      <td>{$product.weight}</td>
+      <td class="right aligned ">
+            <div class="ui blue buttons">
+            <a href="{:url('product/view?id='.$product['id'])}" class="ui button">查看</a>
+            <div class="ui floating dropdown icon button">
+              <i class="dropdown icon"></i>
+              <div class="menu">
+                <a href="{:url('product/edit?id='.$product['id'])}" class="item"><i class="edit icon"></i>修改</a>
+                <a href="javacript:void(0);" class="item deletebtn" data-id="{$product.id}" data-sku="{$product.sku}"><i class="delete icon"></i>删除</a>
+              </div>
+            </div>
+            </div>
+          </td>
+    </tr>
+ {/volist}
+  </tbody>
+</table>
+ <div class="ui grid">
+    <div class="eleven wide column">{$page}</div>
+    <div class="two wide column"></div>
+    <div class="three wide column">
+     <a href="{:url('product/add')}" class="ui button blue mt30 right floated">添加产品</a>
+     </div>
+</div>
+<!-- deletepop -->
+<div id="blackpop" class="ui basic small modal">
+  <i class="close icon"></i>
+ <div class="ui icon large header">
+ </div>
+  <div class="actions">
+      <div class="ui red basic inverted cancel button">
+        <i class="remove icon"></i>
+        否
+      </div>
+      <a href="javascript:void(0)" id="deleteconfirm" class="ui green basic inverted  button">
+        <i class="checkmark icon"></i>
+        是
+      </a>
+  </div>
+</div>
+<script type="text/javascript">
+   var sku=''; var id = '';
+  $(".deletebtn").click(function(){
+     sku = $(this).data('sku');
+     id = $(this).data('id');
+    $("#blackpop .header").html('<i class="archive icon"></i> 是否真的要删除SKU为：'+sku+' 的产品？');
+        $('.ui.basic.modal').modal('show');
+  });
+ 
+  $("#deleteconfirm").click(function(){
+     $("#blackpop .header").html('<div class="ui active large text inline loader"></div><br>正在删除 '+sku);
+     var deletelink = '{:url('product/delete')}?id='+id;
+     $.get(deletelink,function(data){
+         $("#blackpop .header").html('<i class="smile  icon"></i>'+data.msg);
+         $("#blackpop .actions").remove();
+         setTimeout('myrefresh()',1000); 
+     },"json");
+     
+  });
+   function myrefresh(){
+           window.location.reload();
+          }
+</script>
+<!-- end delete pop-->
+{/block}

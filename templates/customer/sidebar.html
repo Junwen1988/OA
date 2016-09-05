@@ -1,0 +1,33 @@
+<button class="fluid ui blue  button"> <i class="options icon"></i>快捷菜单</button>
+<div class="ui vertical pointing menu">
+  <a href="{:url('customer/index')}" class="item {eq name='currentleft' value='list'}active{/eq}">
+     <span><i class="list  icon"></i> 客户列表</span>
+  </a>
+  <a href="{:url('customer/add')}" class="item {eq name='currentleft' value='add'}active{/eq}">
+    <span><i class="add user icon"></i> 添加客户</span>
+  </a>
+
+   <a href="{:url('customer/nocheckcustomer')}" class="item {eq name='currentleft' value='nocheckcustomer'}active{/eq}">
+    <span><i class="radio user icon"></i> 未审核客户</span>
+  </a> 
+  <a href="{:url('customer/blackcustomer')}" class="item {eq name='currentleft' value='blackcustomer'}active{/eq}">
+    <span><i class="remove user icon"></i> 黑名单客户</span>
+  </a> 
+  </div>
+  <button class="fluid ui blue  button"> <i class="options icon"></i>更多操作</button>
+  <div class="ui vertical pointing menu">
+  <a href="{:url('customer/tongji')}" class="item {eq name='currentleft' value='daoru'}active{/eq}">
+    <span><i class="sign in icon"></i> 导入客户</span>
+  </a>
+ 
+  <a href="{:url('customer/tongji')}" class="item {eq name='currentleft' value='daochu'}active{/eq}">
+    <span><i class="sign out icon"></i> 导出客户</span>
+  </a>
+  <a href="{:url('customer/tongji')}" class="item {eq name='currentleft' value='getcustomer'}active{/eq}">
+    <span><i class="forumbee icon"></i> 提取客户</span>
+  </a>
+   <a href="{:url('customer/tongji')}" class="item {eq name='currentleft' value='tongji'}active{/eq}">
+    <span><i class="bar chart icon"></i> 客户统计</span>
+  </a>
+</div>
+

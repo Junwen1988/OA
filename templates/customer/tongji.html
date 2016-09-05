@@ -1,0 +1,79 @@
+{extend name="2columns-left" /}
+{block name="head"}
+<script type="text/javascript" src="__JS__/echarts.min.js"></script>
+{/block}
+{block name="sidebar"}
+ {include file="customer/sidebar" /}
+{/block}
+{block name="content"}
+{include file="customer/searchbar" /}
+<div class="ui  segment">
+ <div class="ui grid">
+  <div class="sixteen wide column">
+      <div id="ordergl" style="width:100%; height:380px;"></div>
+      <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var cm_ordergl = echarts.init(document.getElementById('ordergl'));
+        option = {
+    title: {
+        text: '客户统计'
+    },
+    tooltip : {
+        trigger: 'axis'
+    },
+    legend: {
+        data:['新客户','今日订单']
+    },
+    toolbox: {
+        feature: {
+            saveAsImage: {}
+        }
+    },
+    grid: {
+        left: '0%',
+        right: '1%',
+        bottom: '3%',
+        containLabel: true
+    },
+    xAxis : [
+        {
+            type : 'category',
+            boundaryGap : false,
+            data : ['周一','周二','周三','周四','周五','周六','周日']
+        }
+    ],
+    yAxis : [
+        {
+            type : 'value'
+        }
+    ],
+    series : [
+        {
+            name:'新客户',
+            type:'line',
+            stack: '总量',
+            areaStyle: {normal: {}},
+            data:[120, 132, 101, 134, 90, 230, 210]
+        },
+        {
+            name:'今日订单',
+            type:'line',
+            stack: '总量',
+            areaStyle: {normal: {}},
+            data:[220, 182, 191, 234, 290, 330, 310]
+        }
+    ],
+    color : ['#2185d0','#C30000']
+};
+
+       cm_ordergl.setOption(option);
+       </script>
+  </div>
+
+  <div class="sixteen wide column">
+     
+  </div>
+
+</div>
+</div>
+{/block}

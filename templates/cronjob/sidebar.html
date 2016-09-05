@@ -1,0 +1,16 @@
+<button class="fluid ui blue  button " onclick="javascript:history.go(-1)"> <i class="reply all  icon"></i> 返回</button>
+<div class="ui vertical pointing menu">
+  <a href="{:url('cronjob/index')}" class="item {eq name="currentleft" value="index"} active {/eq}">
+     <span><i class="calendar  icon"></i> 所有任务</span>
+  </a>
+  <a href="{:url('cronjob/wait')}" class="item {eq name="currentleft" value="wait"} active {/eq}">
+    <span><i class="hourglass start icon"></i> 待执行任务</span>
+  </a> 
+  <a href="{:url('cronjob/failt')}" class="item {eq name="currentleft" value="failt"} active {/eq}">
+    <span><i class="hourglass end icon"></i> 已失败任务</span>
+  </a>
+  <a href="{:url('cronjob/completed')}" class="item {eq name="currentleft" value="completed"} active {/eq}">
+    <span><i class="calendar checked icon"></i> 已执行任务</span>
+  </a> 
+
+</div>

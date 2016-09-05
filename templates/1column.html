@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>管理系统</title>
+<link type="text/css" rel="stylesheet" href="__CSS__/semantic.min.css">
+<link type="text/css" rel="stylesheet" href="__CSS__/style.css">
+<script type="text/javascript" src="__JS__/jQuery.min.js"></script>
+<script type="text/javascript" src="__JS__/semantic.min.js"></script>
+
+</head>
+
+<body>
+<!--[if lte IE 9]>
+<p class="browsehappy">你正在使用<strong>过时</strong>的浏览器， 暂不支持。 请 <a href="http://browsehappy.com/" target="_blank">升级浏览器</a>
+    以获得更好的体验！</p>
+<![endif]-->
+{block name="header"}
+{include file="public/header" /}
+{/block}
+
+<div class="main">
+<div class="ui  grid">
+{block name="content"}
+
+{/block}
+</div>
+</div> 
+
+{block name="footer"}
+{include file="public/footer" /}
+{/block}
+
+{block name="script"}
+<script>
+$('.combo.dropdown')
+.dropdown({
+  action: 'combo'
+});
+
+$('.ui.checkbox').checkbox();
+
+$('.ui.accordion').accordion();
+
+$(document)
+  .ready(function() {
+    $('.ui.dropdown')
+      .dropdown({
+        on: 'click'
+      })
+      $('.ui.menu .ui.dropdown').dropdown({
+        on: 'hover'
+      });
+      $('.ui.menu a.item')
+        .on('click', function() {
+          $(this)
+            .addClass('active')
+            .siblings()
+            .removeClass('active')
+          ;
+        })
+  })
+;
+
+$('.message .close')
+  .on('click', function() {
+    $(this)
+      .closest('.message')
+      .transition('fade')
+    ;
+  })
+;
+</script>
+{/block}
+
+</body>
+</html>

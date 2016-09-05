@@ -1,0 +1,105 @@
+<div class="ui blue segment">
+<div class="ui grid">
+  <div class="eight wide column">
+  <form name="ordersearch" id="ordersearch" action="{:url('customer/customerSearch')}" method="get">
+<div class="ui action left input">
+  <input type="text" name="keyword" id="keyword" placeholder="关键词...">
+  <select name="stype" class="ui compact selection dropdown">
+    <option selected="" value="name">客户名称</option>
+    <option value="email">邮箱</option>
+  </select>
+  <div type="submit" id="btn-search" class="ui blue button">搜索</div>
+</div>
+ </form>
+  </div>
+  <div class="eight wide column">
+  <form name="orderfilter" id="orderfilter" action="{:url('customer/customerFilter')}" method="get">
+  <div id="btn-filter" class="ui blue right floated button ml10"><i class="search icon"></i> 筛选</div>
+  <!--按国家刷选-->
+<div class="ui floating dropdown right floated labeled icon button">
+  <i class="flag icon"></i>
+  <span id="country" class="text">选择国家</span>
+  <input type="hidden" id="scountry" name="country" value="">
+  <div class="menu">
+    <div class="ui icon search input">
+      <i class="search icon"></i>
+      <input type="text"  placeholder="搜索国家...">
+    </div>
+    <div class="divider"></div>
+    <div class="header"><i class="tags icon"></i> 国家列表 </div>
+    <div class="scrolling menu">
+      <div class="item">
+        <i data-country="us" class="flag us"></i>美国 </div>
+      <div class="item">
+        <i data-country="ru" class="flag ru"></i>俄罗斯 </div>
+      <div class="item">
+        <i data-country="gb" class="flag gb"></i>英国</div>
+      <div class="item">
+       <i data-country="ca" class="flag ca"></i>加拿大 </div>
+      <div class="item">
+        <i data-country="de" class="flag de"></i>德国 </div>
+      <div class="item">
+        <i data-country="it" class="flag it"></i>意大利</div>
+      <div class="item">
+        <i data-country="fr" class="flag fr"></i>法国 </div>
+      <div class="item">
+        <i data-country="no" class="flag no"></i>挪威 </div>
+      <div class="item">
+        <i data-country="au" class="flag au"></i>澳大利亚 
+      </div>
+      <div class="item">
+        <i data-country="my" class="flag my"></i>马来西亚 
+      </div> 
+      <div class="item">
+        <i data-country="at" class="flag at"></i> 奥地利 
+      </div>
+      <div class="item">
+        <i data-country="se" class="flag se"></i> 瑞典 
+      </div>
+      <div class="item">
+        <i data-country="nl" class="flag nl"></i> 荷兰 
+      </div>
+      <div class="item">
+        <i data-country="tw" class="flag tw"></i> 台湾 
+      </div>
+      <div class="item">
+        <i data-country="hk" class="flag hk"></i> 香港 
+      </div>
+    </div>
+  </div>
+</div>
+<!--end按国家刷选-->
+<!--按日期-->
+<div class="f-right mr10">
+ <label>选择日期： </label>
+ <div class="ui left icon input">
+    <input type="text" name="reservation" id="reservation" value="" placeholder="03/18/2016 - 03/23/2016" />
+    <i class="calendar icon"></i>
+  </div>
+</div>
+<!-- end 按日期-->
+</form>
+  </div>
+</div>
+</div>
+
+<script type="text/javascript">
+ $(document).ready(function() {
+                            $('#reservation').daterangepicker({opens: 'center'});
+                        });
+
+   $('#btn-search').click(function(){
+       if($('#keyword').val() !=''){
+          $('#ordersearch').submit();
+       }  
+   });
+
+
+     $('#btn-filter').click(function(){
+       var country = $("#country>i").data('country');
+       if($('#reservation').val() !=''|| country !=''){
+          $('#scountry').val(country);
+          $('#orderfilter').submit();
+       }  
+   });
+ </script>

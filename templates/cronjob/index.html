@@ -1,0 +1,90 @@
+{extend name="2columns-left" /}
+{block name="sidebar"}
+ {include file="cronjob/sidebar" /}
+{/block}
+{block name="content"}
+<!-- 列表 -->
+<form name="cronjobform" class="mt15" id="cronjobform" action="" method="post">
+<table class="ui celled selectable left aligned table visible fluid">
+      <thead>
+        <tr>
+        <th width="3%">
+          <div class="ui master  checkbox ">
+              <input type="checkbox" name="all" >
+          </div>
+        </th>
+        <th width="5%">任务ID</th>
+        <th width="10%">下达日期</th>
+        <th width="10%">对应订单</th>
+        <th width="10%">任务状态</th>
+        <th width="15%">任务内容</th>
+        <th width="10%">执行时间</th>
+        <th class=" " width="10%">执行次数</th>
+        <th class="center aligned " width="15%">操作</th>
+      </tr></thead>
+      <tbody>
+      {volist name="cronjoblist" id="cronjob"}
+        <tr {eq name="$cronjob.status" value="-1"} class="negative" {/eq}>
+          <td class="checkboxid"><div class="ui checkbox">
+              <input type="checkbox"  name="id[]" class="cronjobid" value="{$cronjob.id}">
+              </div>
+          </td>
+          <td>{$cronjob.id}</td>
+          <td>{php} echo date("Y年m月d日", $cronjob['creat_at']){/php} <br> {php} echo date("H:i:s", $cronjob['creat_at']){/php}</td>
+          <td>{$cronjob.ordernum}</td>
+          <td>{$cronjob.status|getCronjobstatustext}</td>
+          <td>{$cronjob.type|getCronjobtext}</td>
+          <td>{php} if($cronjob['update_at'] != 0){ echo date("Y年m月d日", $cronjob['update_at']); }{/php} <br> {php} if($cronjob['update_at'] != 0){ echo date("H:i:s", $cronjob['update_at']);}{/php}</td>
+          <td>{gt name="$cronjob.dotimes" value="0"}{$cronjob.dotimes} {/gt}</td>
+          <td class="center aligned">
+            <div class="ui buttons">
+              <div data-id="{$cronjob.id}" class="pausebtn ui positive button">暂停</div>
+              <div class="or"></div>
+              <div data-id="{$cronjob.id}" class="deletebtn ui grey button">删除</div>
+            </div>
+          </td>
+          </tr>
+      {/volist}
+      </tbody>
+</table>
+{$page}
+</form>
+<!-- deletepop -->
+<div id="blackpop" class="ui basic small modal">
+  <i class="close icon"></i>
+ <div class="ui icon large header">
+ </div>
+  <div class="actions">
+      <div class="ui red basic inverted cancel button">
+        <i class="remove icon"></i>
+        否
+      </div>
+      <a href="javascript:void(0)" id="deleteconfirm" class="ui green basic inverted  button">
+        <i class="checkmark icon"></i>
+        是
+      </a>
+  </div>
+</div>
+<!-- end deletepop -->
+{/block}
+{block name="script"}
+<script type="text/javascript">
+  var id = '';
+  $(".deletebtn").click(function(){
+     id = $(this).data('id');
+    $("#blackpop .header").html('<i class="archive icon"></i> 是否真的要删除ID为：'+id+' 的任务？');
+        $('.ui.basic.modal').modal('show');
+  });
+ 
+  $("#deleteconfirm").click(function(){
+     $("#blackpop .header").html('<div class="ui active large text inline loader"></div><br>正在删除ID为 '+ id + ' 的任务');
+     var deletelink = '{:url('Cronjob/delete')}?id='+id;
+     $.get(deletelink,function(data){
+         $("#blackpop .header").html('<i class="smile  icon"></i>'+data.msg);
+         $("#blackpop .actions").remove();
+         refresh();
+     });
+     
+  });
+</script>
+{/block}
